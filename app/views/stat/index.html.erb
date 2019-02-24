@@ -1,0 +1,28 @@
+<h1 class="title is-3">Al momento i calciatori su Wikidata nei Paesi con meno di <%= @pop %> abitanti sono <%= @players.count %></h1>
+<% if @pop == 50000 %>
+  <% link_to 'Vedi giocatori in paesi con meno di 100.000 persone', root_path(:pop => 100000), class: 'button is-primary is-big' %>
+<% else %>
+  <% link_to 'Vedi dati per 50.000 persone', root_path(:pop => 50000), class: 'button is-primary is-big' %>
+<% end %>
+
+<table id="player-table" class="table">
+<thead>
+  <th>Nome e cognome</th>
+  <th>Stato di appartenenza</th>
+  <th>Popolazione dello stato</th>
+</thead>
+<% @players.each do |player| %>
+<tr>
+  <td><%= link_to player.name, player.item, class: 'is-link' %></td>
+  <td><%= player.country %></td>
+  <td><%= player.pop %></td>
+</tr>
+<% end %>
+</table>
+
+<script>
+  $(document).ready( function () {
+      $('#player-table').DataTable();
+  } );
+</script>
+<%= link_to 'Avvia importazione', import_path, method: :post, class: 'button is-danger is-small' %>
