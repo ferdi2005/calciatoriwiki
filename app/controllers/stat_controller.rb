@@ -19,6 +19,7 @@ SELECT ?association_football_player ?association_football_playerLabel ?countryLa
   ?association_football_player wdt:P27 ?country.
   ?country wdt:P31 wd:Q3624078.
   ?country wdt:P1082 ?pop.
+  FILTER (?pop < 150000)
 }
 SPARQL
 
