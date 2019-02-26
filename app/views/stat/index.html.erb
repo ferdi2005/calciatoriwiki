@@ -1,20 +1,27 @@
-<h1 class="title is-3">Al momento i calciatori su Wikidata nei Paesi con meno di <%= @pop %> abitanti sono <%= @players.count %></h1>
+<h1 class="title is-3">Al momento i calciatori su Wikidata nei Paesi con meno di <%= @pop %> abitanti sono <%= @playercount %>, quelli su Wikipedia in lingua italiana sono <%= @playerwikipediacount %></h1>
 <% if @pop == 50000 %>
-  <% link_to 'Vedi giocatori in paesi con meno di 100.000 persone', root_path(:pop => 100000), class: 'button is-primary is-big' %>
+  <%= link_to 'Vedi giocatori in paesi con meno di 100.000 persone', root_path(params.merge(:pop => 100000)), class: 'button is-primary is-big' %>
 <% else %>
-  <% link_to 'Vedi dati per 50.000 persone', root_path(:pop => 50000), class: 'button is-primary is-big' %>
+  <%= link_to 'Vedi dati per 50.000 persone', root_path(params.merge(:pop => 50000)), class: 'button is-primary is-big' %>
 <% end %>
-
+<% if params[:wikidata] == "true" %>
+  <%= link_to 'Non includere risultati solo da Wikidata', params.merge(:wikidata => "false"), class: 'button is-danger' %>
+<% else %>
+  <%= link_to 'Includi anche risultati solo da Wikidata', params.merge(:wikidata => "true"), class: 'button is-danger' %>
+<% end %>
 <table id="player-table" class="table">
 <thead>
+  <th>Links</th>
   <th>Nome e cognome</th>
   <th>Stato di appartenenza</th>
   <th>Popolazione dello stato</th>
 </thead>
 <% @players.each do |player| %>
 <tr>
-  <td><%= link_to player.name, player.item, class: 'is-link' %></td>
-  <td><%= player.country %></td>
+  <td><%= link_to 'Wikidata', player.item, style: 'margin-bottom: 5px;',class: 'button is-danger is-small' %> &nbsp;
+  <%= link_to 'Wikipedia', player.wikipedia, class: 'button is-link is-small' %></td>
+  <td><%= link_to player.name, player.wikipedia, class: 'is-link' %></td>
+  <td><%= link_to player.country, "https://it.wikipedia.org/wiki/#{player.country}", class: 'is-primary' %></td>
   <td><%= player.pop %></td>
 </tr>
 <% end %>
